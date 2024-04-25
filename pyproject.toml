@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "signer-autofill"
+version = "0.1.0"
+description = ""
+authors = ["Seth-Schmidt <seth@powerloom.io>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+web3 = "^6.17.2"
+tenacity = "^8.2.3"
+loguru = "^0.7.2"
+pydantic = "^2.7.1"
+aiorwlock = "^1.4.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

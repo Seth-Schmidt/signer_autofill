@@ -1,0 +1,11 @@
+.env
+.python-version
+__pycache__/
+.idea/
+.DS_Store
+screenlog*
+temp/*
+config/*settings.json
+**/*.backup
+.vscode/*
+logs/*
