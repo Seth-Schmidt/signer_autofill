@@ -1,0 +1,36 @@
+{
+  "source_address": "source-account-address",
+  "source_chain_id": "source-chain-id",
+  "source_private_key": "source-account-private-key",
+  "rpc": {
+    "full_nodes": [{
+      "url": "https://rpc-url"
+    }],
+    "archive_nodes": [],
+    "force_archive_blocks": 100,
+    "retry": 5,
+    "request_time_out": 5,
+    "skip_epoch_threshold_blocks": 30,
+    "polling_interval": 3,
+    "semaphore_value": 20,
+    "connection_limits":{
+      "max_connections": 100,
+      "max_keepalive_connections": 50,
+      "keepalive_expiry": 300
+    }
+  },
+  "snapshot_submissions": {
+    "enabled": true,
+    "signers": [
+      {
+        "address": "signer-address",
+        "private_key": "signer-private-key"
+      }
+    ]
+  },
+  "logs": {
+    "trace_enabled": false,
+    "write_to_files": true
+  },
+  "min_signer_value": 0.02
+}
