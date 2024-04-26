@@ -59,6 +59,10 @@ class RLimit(BaseModel):
     file_descriptors: int
 
 
+class ReportingConfig(BaseModel):
+    slack_url: str
+
+
 class Settings(BaseModel):
     source_private_key: str
     source_address: str
@@ -70,3 +74,4 @@ class Settings(BaseModel):
     source_balance_threshold: float
     redis: Redis
     rlimit: RLimit
+    reporting: ReportingConfig

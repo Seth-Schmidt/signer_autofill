@@ -1,7 +1,7 @@
 {
   "source_address": "source-account-address",
-  "source_chain_id": "source-chain-id",
   "source_private_key": "source-account-private-key",
+  "source_chain_id": "source-chain-id",
   "rpc": {
     "full_nodes": [{
       "url": "https://rpc-url"
@@ -27,6 +27,9 @@
         "private_key": "signer-private-key"
       }
     ]
+  },
+  "reporting": {
+    "slack_url": "https://slack-reporting-url"
   },
   "redis": {
     "host": "redis",
