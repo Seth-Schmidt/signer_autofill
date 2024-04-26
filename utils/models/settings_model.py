@@ -53,3 +53,4 @@ class Settings(BaseModel):
     snapshot_submissions: TxSubmissionConfig
     logs: Logs
     min_signer_value: float
+    source_balance_threshold: float
