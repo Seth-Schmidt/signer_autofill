@@ -55,6 +55,10 @@ class Redis(BaseModel):
     cluster_mode: bool = False
 
 
+class RLimit(BaseModel):
+    file_descriptors: int
+
+
 class Settings(BaseModel):
     source_private_key: str
     source_address: str
@@ -65,3 +69,4 @@ class Settings(BaseModel):
     min_signer_value: float
     source_balance_threshold: float
     redis: Redis
+    rlimit: RLimit

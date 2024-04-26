@@ -40,6 +40,9 @@
     "trace_enabled": false,
     "write_to_files": true
   },
+  "rlimit": {
+		"file_descriptors": 2048
+	},
   "min_signer_value": 0.02,
   "source_balance_threshold": 1.0
 }

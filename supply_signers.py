@@ -1,6 +1,8 @@
 import asyncio
 import aiorwlock
+import resource
 import time
+import uvloop
 
 from redis import asyncio as aioredis
 from web3 import Web3
@@ -194,6 +196,19 @@ class SignerManager:
         await asyncio.gather(*futures)
 
 
+def main():
+    # set resource limits and start event loop for signer manager
+    soft, hard = resource.getrlimit(resource.RLIMIT_NOFILE)
+    resource.setrlimit(
+        resource.RLIMIT_NOFILE,
+        (settings.rlimit.file_descriptors, hard),
+    )
+    loop = uvloop.new_event_loop()
+    asyncio.set_event_loop(loop)
+
+    manager_process = SignerManager()
+    loop.run_until_complete(manager_process.run())
+
+
 if __name__ == '__main__':
-    signer_manager = SignerManager()
-    asyncio.run(signer_manager.run())
+    main()
