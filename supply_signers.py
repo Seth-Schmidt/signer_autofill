@@ -2,6 +2,7 @@ import asyncio
 import aiorwlock
 import time
 
+from redis import asyncio as aioredis
 from web3 import Web3
 from web3.eth import AsyncEth
 from tenacity import retry
@@ -12,10 +13,16 @@ from tenacity import wait_random_exponential
 from settings.config import settings
 from utils.default_logger import logger
 from utils.helper_functions import aiorwlock_aqcuire_release
+from utils.redis.redis_conn import RedisPoolCache
+from utils.rpc import RpcHelper
 from utils.transaction_utils import write_transaction
 
 
 class SignerManager:
+    _aioredis_pool: RedisPoolCache
+    _redis_conn: aioredis.Redis
+    _rpc_helper: RpcHelper
+    _source_nonce: int
 
     def __init__(self):
         self._logger = logger.bind(module="SignerManager")
@@ -30,10 +37,30 @@ class SignerManager:
         )
         self._rwlock = aiorwlock.RWLock(fast=True)
         self._min_signer_value = self._web3_async.to_wei(settings.min_signer_value, 'ether')
+        self._source_balance_threshold = self._web3_async.to_wei(settings.source_balance_threshold, 'ether')
         self._signers = settings.snapshot_submissions.signers
+        self._initialized = False
 
 
-    async def init_manager_nonce(self):
+    async def _init_redis_pool(self):
+        """
+        Initializes the Redis connection pool and populates it with connections.
+        """
+        self._aioredis_pool = RedisPoolCache()
+        await self._aioredis_pool.populate()
+        self._redis_conn = self._aioredis_pool._aioredis_pool
+
+
+    async def _init_rpc_helper(self):
+        """
+        Initializes the RpcHelper objects for the worker and anchor chain, and sets up the protocol state contract.
+        """
+        self._rpc_helper = RpcHelper(rpc_settings=settings.rpc)
+        await self._rpc_helper.init()
+        self._logger.info('RPC helper nodes: {}', self._rpc_helper._nodes)
+
+
+    async def _init_source_nonce(self):
         self._source_nonce = await self._web3_async.eth.get_transaction_count(self._source_address)
         
     
@@ -148,8 +175,17 @@ class SignerManager:
             )
             raise e
 
+
+    async def init(self):
+        if not self._initialized:
+            await self._init_redis_pool()
+            await self._init_rpc_helper()
+            await self._init_source_nonce()
+        self._initialized = True
+
+
     async def run(self):
-        await self.init_manager_nonce()
+        await self.init()
         
         futures = [
             asyncio.ensure_future(self.check_and_send(signer.address))
