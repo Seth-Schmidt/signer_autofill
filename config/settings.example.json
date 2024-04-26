@@ -28,6 +28,14 @@
       }
     ]
   },
+  "redis": {
+    "host": "redis",
+    "port": 6379,
+    "db": 0,
+    "password": null,
+    "ssl": false,
+    "cluster_mode": false
+  },
   "logs": {
     "trace_enabled": false,
     "write_to_files": true

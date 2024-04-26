@@ -1,5 +1,6 @@
 from typing import List
 from typing import Optional
+from typing import Union
 
 from pydantic import BaseModel
 
@@ -45,6 +46,15 @@ class TxSubmissionConfig(BaseModel):
     signers: List[SignerConfig] = []
 
 
+class Redis(BaseModel):
+    host: str
+    port: int
+    db: int
+    password: Union[str, None] = None
+    ssl: bool = False
+    cluster_mode: bool = False
+
+
 class Settings(BaseModel):
     source_private_key: str
     source_address: str
@@ -54,3 +64,4 @@ class Settings(BaseModel):
     logs: Logs
     min_signer_value: float
     source_balance_threshold: float
+    redis: Redis
