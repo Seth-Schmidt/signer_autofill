@@ -12,6 +12,7 @@ tenacity = "^8.2.3"
 loguru = "^0.7.2"
 pydantic = "^2.7.1"
 aiorwlock = "^1.4.0"
+redis = "^5.0.4"
 
 
 [build-system]
