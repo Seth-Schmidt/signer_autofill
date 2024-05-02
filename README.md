@@ -9,6 +9,7 @@ Setup:
 - Add the signers you wish to supply with ETH in the `snapshot_submissions.signers` section of `config/settings.json`
 - Change `min_signer_value` (optional)
 
+
 Run:
 
 `poetry run python3 -m supply_signers`
